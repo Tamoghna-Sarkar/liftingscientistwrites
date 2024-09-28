@@ -1,9 +1,9 @@
 # Welcome to LiftingScientistWrites
 
 ## Daily Logs
-- [23rd September 2024](./Daily-Logs/log-2024-09-23.md)
-- [24th September 2024](./Daily-Logs/log-2024-09-24.md)
+- [23rd September 2024](./Daily-Logs/log-2024-09-27.md)
+- [24th September 2024](./Daily-Logs/log-2024-09-28.md)
 
 ## PhD Journey: Brick by Brick
-- [Milestone 1: Starting My PhD](./BrickbyBrick/milestone-1.md)
-- [Milestone 2: First Publication](./BrickbyBrick/milestone-2.md)
+- [Milestone 1: Taaza Khabar](./BrickbyBrick/Ep-1.md)
+- [Milestone 2: Taaza Khabar](./BrickbyBrick/Ep-2.md)
