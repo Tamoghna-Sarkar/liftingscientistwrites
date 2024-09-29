@@ -1,5 +1,10 @@
 # Welcome to LiftingScientistWrites
 <link rel="stylesheet" href="style.css">
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+<div class="shape shape3"></div>
+
+
 
 ## Daily Logs
 - [27th September 2024](./Daily-Logs/log-2024-09-27.md)

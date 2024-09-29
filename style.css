@@ -4,8 +4,10 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #2C2E4A; /* Dark blue/purple background */
     color: #333;
+    overflow: hidden; /* Hides overflow from floating shapes */
+    height: 100vh; /* Full screen height */
 }
 
 /* Header and Titles */
@@ -66,4 +68,57 @@ footer {
     width: 100%;
     bottom: 0;
     left: 0;
+}
+
+/* Floating shapes */
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 10s ease-in-out infinite;
+}
+
+/* Shape 1 - Circle */
+.shape1 {
+    background-color: #FF6F61; /* Red */
+    width: 50px;
+    height: 50px;
+    top: 10%;
+    left: 20%;
+    animation-duration: 6s; /* Different animation speed */
+}
+
+/* Shape 2 - Triangle */
+.shape2 {
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 60px solid #FFC857; /* Yellow */
+    top: 50%;
+    left: 40%;
+    animation-duration: 8s;
+}
+
+/* Shape 3 - Custom line */
+.shape3 {
+    background-color: #00BFFF; /* Light blue */
+    width: 4px;
+    height: 80px;
+    top: 70%;
+    left: 60%;
+    animation-duration: 10s;
+}
+
+/* Floating animation */
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(45deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
 }
