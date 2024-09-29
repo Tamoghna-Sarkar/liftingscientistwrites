@@ -4,7 +4,7 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #2C2E4A; /* Dark blue/purple background */
+    background-color: #fbfbff; /* Dark blue/purple background */
     color: #333;
     overflow: hidden; /* Hides overflow from floating shapes */
     height: 100vh; /* Full screen height */

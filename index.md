@@ -14,3 +14,10 @@
 ## PhD Journey: Brick by Brick
 - [Milestone 1: Taaza Khabar](./BrickbyBrick/Ep-1.md)
 
+
+
+
+<!-- Add floating shapes using HTML inside the Markdown file -->
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+<div class="shape shape3"></div>`
