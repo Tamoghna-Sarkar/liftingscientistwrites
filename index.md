@@ -1,4 +1,5 @@
 # Welcome to LiftingScientistWrites
+<link rel="stylesheet" href="style.css">
 
 ## Daily Logs
 - [27th September 2024](./Daily-Logs/log-2024-09-27.md)
