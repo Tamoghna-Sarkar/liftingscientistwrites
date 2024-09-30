@@ -16,6 +16,7 @@
 
 ## PhD Journey: Brick by Brick
 - [Milestone 1: Taaza Khabar](./BrickbyBrick/Ep-1.md)
+- [Milestone 2: Taaza Khabar](./BrickbyBrick/Ep-2.md)
 
 
 
