@@ -13,7 +13,7 @@
  
 
 ## PhD Journey: Brick by Brick (Will start logging 2025)
-- [Milestone 1: Taaza Khabar](./BrickbyBrick/Ep-1.md)
+- [Milestone 1: Taaza Khabar](./BrickbyBrick/FL_Implementation/Hermes.md)
 
 
 
