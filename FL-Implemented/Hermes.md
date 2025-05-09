@@ -214,6 +214,84 @@ Although CIFAR-10 is a small image dataset (32×32 images, 10 classes), the Herm
 ➡️ In summary, using large models on small datasets helps evaluate **system-level performance** of FL methods, which is central to Hermes' goals.
 
 
+## 3.1 Overview of Hermes
+
+Hermes is a personalized Federated Learning (FL) framework designed to simultaneously address:
+
+- **Communication overhead**
+- **Inference inefficiency**
+- **Data heterogeneity**
+
+Unlike traditional FL frameworks that train and share the full global model, Hermes takes a different approach:
+
+---
+
+### 🔁 Hermes Workflow (5 Steps)
+
+1. **Local Subnetwork Learning (Structured Pruning)**  
+   Each selected device starts from the same base model but uses **structured pruning** based on its **local data** to create a smaller, personalized subnetwork.
+
+2. **Communication to Server**  
+   Instead of sending the full model, the device **only communicates the pruned subnetwork parameters** to the server, reducing communication load.
+
+3. **Aggregation on Intersected Parameters Only**  
+   The server performs aggregation **only on parameters shared across devices' subnetworks**. Non-overlapping (personalized) parameters are left untouched to preserve local specialization.
+
+4. **Return Updated Shared Parameters**  
+   The server sends the updated overlapping parameters back to each device. Each device merges this into its own subnetwork.
+
+5. **Repeat for T Rounds**  
+   This process is repeated for a predefined number of communication rounds. Eventually, each device has a **personalized, structured-sparse model** suited for its data.
+
+---
+
+### 🧩 Structured Pruning Explained
+
+**Structured pruning** is a compression technique where **entire components of a neural network** are removed (instead of individual weights). This includes:
+
+- Filters or channels in CNNs
+- Neurons in fully connected layers
+- Blocks or layers in deeper architectures
+
+This produces models that are:
+
+- Smaller in size
+- Faster to execute
+- Easier to deploy on hardware (compared to unstructured sparsity)
+
+---
+
+### 🧠 Why Structured Pruning in Hermes?
+
+- Each device has **non-IID data** (e.g., different users, tasks, or sensors).
+- So each device **retains different parts** of the model that are most useful for its own local data.
+- This leads to **heterogeneous subnetworks** across devices.
+
+#### Mask Representation:
+Each device learns a binary mask `M_k` such that:
+
+- `M_k ∈ {0,1}^{|W_k|}` — same size as the base model
+- `W_k ⊙ M_k` gives the subnetwork (only "kept" parameters are active)
+
+Where:
+- `W_k` is the full base model on device `k`
+- `⊙` denotes element-wise multiplication
+
+---
+
+### ✅ Benefits of Structured Pruning in Hermes
+
+| Benefit                     | Explanation                                                                 |
+|----------------------------|-----------------------------------------------------------------------------|
+| **Personalization**         | Devices keep only what matters for their local data                        |
+| **Efficiency**              | Smaller models → faster inference and less energy use                      |
+| **Communication Reduction** | Only active subnetwork parameters are sent to the server                   |
+| **Preserves Heterogeneity** | Different devices naturally train on different parts of the base model     |
+
+---
+
+Hermes capitalizes on structured pruning to make FL more practical and personalized, especially under heterogeneous, resource-constrained environments.
+
 
 
 
