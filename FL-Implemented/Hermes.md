@@ -133,6 +133,51 @@ This method is simple and effective but relies on key assumptions:
 - All devices use the **same full model** architecture.
 - Data is **IID** or only mildly non-IID.
 
+### 2.2 Data Heterogeneity Enforces Model Personalization
+
+One of the main motivations for using Federated Learning (FL) is to collaboratively learn a global model that performs **better than local-only training**. However, this advantage **breaks down under non-IID data**.
+
+Several studies [18, 29, 36] show that when devices have **highly heterogeneous data distributions**, a locally trained model can actually **outperform the global model** trained via FL.
+
+---
+
+#### 🔬 Experimental Evidence
+
+To demonstrate this, the authors conducted an experiment using **CIFAR-10** with the **FedAvg** algorithm.
+
+- **Communication rounds**: 400  
+- **Devices per round**: 20  
+- **Local epochs per device**: 5  
+- **Each device holds**:
+  - Only **2 classes** out of 10  
+  - **20 samples per class** → total 40 samples per device
+
+---
+
+#### 📊 Results
+
+- **FedAvg Global Model Accuracy**: 47.67%
+- **Locally Trained Model Accuracy**: 65.44%
+
+➡️ The global model trained by FedAvg performs **~18% worse** than training locally, due to severe non-IID effects.
+
+---
+
+#### ⚠️ Why is this setup highly non-IID?
+
+- Each device has **only 2 out of 10 classes** (extreme label skew).
+- Devices **do not share coverage** of the full dataset.
+- Local updates are **biased** and potentially harmful when aggregated globally.
+
+---
+
+#### ✅ Conclusion
+
+This demonstrates a key challenge:  
+> **"It is difficult to train a one-size-fits-all global model in the presence of non-IID data."**
+
+Hence, **model personalization** becomes essential for effective FL. Hermes is introduced to address this exact problem — by enabling each client to learn a **personalized subnetwork**, while still benefiting from global coordination.
+
 
 
 
