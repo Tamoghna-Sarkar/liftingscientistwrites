@@ -1,7 +1,7 @@
 # Hermes: An Efficient Federated Learning Framework for Heterogeneous Mobile Clients
 
 **Authors**: Ang Li, Jingwei Sun, Pengcheng Li, Yu Pu, Hai Li, Yi  
-**Conference**: [Add the conference here if known]  
+**Conference**: [ACM MobiCom ’21, January 31-February 4, 2022, New Orleans, LA, USA ]  
 **GitHub Summary by**: Tamoghna Sarkar
 
 ---
