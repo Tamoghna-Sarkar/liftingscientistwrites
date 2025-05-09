@@ -90,6 +90,67 @@ Hermes also includes a **theoretical convergence guarantee**, setting it apart f
 
 Hermes represents a significant step toward **practical, personalized FL** for resource-constrained, heterogeneous clients.
 
+## 2. Background and Motivation
+
+This section motivates the need for **personalized federated learning (FL)** and highlights the **communication bottlenecks** in current approaches. These limitations pave the way for the design of Hermes.
+
+---
+
+### 2.1 Background on Federated Learning
+
+Federated Learning (FL) enables collaborative model training across multiple devices **without sharing local data**. A **central server** orchestrates the process, aiming to learn a global model \( \mathbf{W} \) by minimizing the **weighted sum of local losses**:
+
+\[
+\min_{\mathbf{W}} f(\mathbf{W}) = \sum_{k=1}^{N} \frac{n_k}{n} F_k(\mathbf{W}_k) = \mathbb{E}_k [F_k(\mathbf{W}_k)]
+\]
+
+Where:
+
+- \( N \): total number of devices
+- \( n_k \): number of data samples on device \( k \)
+- \( n = \sum_{k=1}^N n_k \): total number of samples across all devices
+- \( F_k(\mathbf{W}_k) \): local objective (empirical risk) for device \( k \)
+- \( \mathbf{W}_k \): model parameters for device \( k \)
+- \( D_k \): local data distribution on device \( k \)
+
+---
+
+#### ⚙️ FedAvg (Federated Averaging)
+
+One of the most popular FL methods is **FedAvg** [McMahan et al. 2017]. Here's how it works:
+
+1. A small random subset of clients (say \( K \ll N \)) is selected in each round.
+2. Each selected device:
+   - Trains the global model on its **local data** using **SGD**.
+   - Uses the same number of local epochs, learning rate, and optimizer.
+3. Devices send their **local updates \( \mathbf{W}_k \)** to the server.
+4. The server performs a **weighted average** using mixing weights \( p_k \) to update the global model:
+
+\[
+\mathbf{W} = \sum_{k=1}^{K} p_k \mathbf{W}_k
+\]
+
+This method is simple and effective but assumes that:
+- All devices use the **same full model**
+- **Data is IID or not severely non-IID**
+- Communication and inference cost of full model is acceptable
+
+These assumptions **break down in heterogeneous and resource-limited settings**, motivating Hermes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 ## 📎 Reference
