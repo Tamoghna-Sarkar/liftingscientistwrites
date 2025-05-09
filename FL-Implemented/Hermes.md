@@ -96,51 +96,42 @@ This section motivates the need for **personalized federated learning (FL)** and
 
 ---
 
-### 2.1 Background on Federated Learning
+## 2.1 Background on Federated Learning
 
-Federated Learning (FL) enables collaborative model training across multiple devices **without sharing local data**. A **central server** orchestrates the process, aiming to learn a global model \( \mathbf{W} \) by minimizing the **weighted sum of local losses**:
+Federated Learning (FL) enables collaborative training of machine learning models across distributed devices **without requiring data to leave local devices**. A central server coordinates the global objective by aggregating model updates from each client.
 
-\[
-\min_{\mathbf{W}} f(\mathbf{W}) = \sum_{k=1}^{N} \frac{n_k}{n} F_k(\mathbf{W}_k) = \mathbb{E}_k [F_k(\mathbf{W}_k)]
-\]
+The global optimization objective is formulated as a **weighted sum of local losses**:
+
+min_W f(W) = sum_{k=1}^{N} (n_k / n) * F_k(W_k)
+
 
 Where:
-
-- \( N \): total number of devices
-- \( n_k \): number of data samples on device \( k \)
-- \( n = \sum_{k=1}^N n_k \): total number of samples across all devices
-- \( F_k(\mathbf{W}_k) \): local objective (empirical risk) for device \( k \)
-- \( \mathbf{W}_k \): model parameters for device \( k \)
-- \( D_k \): local data distribution on device \( k \)
+- `N`: total number of devices
+- `n_k`: number of data samples on device `k`
+- `n = sum_{k=1}^{N} n_k`: total number of samples across all devices
+- `F_k(W_k)`: local objective (empirical risk) for device `k`
+- `W_k`: model parameters for device `k`
+- `D_k`: local data distribution on device `k`
 
 ---
 
-#### ⚙️ FedAvg (Federated Averaging)
+### ✴️ FedAvg (Federated Averaging)
 
-One of the most popular FL methods is **FedAvg** [McMahan et al. 2017]. Here's how it works:
+One of the most popular FL methods is **FedAvg** (McMahan et al., 2017). Here's how it works:
 
-1. A small random subset of clients (say \( K \ll N \)) is selected in each round.
-2. Each selected device:
+1. A small random subset of clients (say `K << N`) is selected in each communication round.
+2. Each selected client:
    - Trains the global model on its **local data** using **SGD**.
    - Uses the same number of local epochs, learning rate, and optimizer.
-3. Devices send their **local updates \( \mathbf{W}_k \)** to the server.
-4. The server performs a **weighted average** using mixing weights \( p_k \) to update the global model:
+3. Devices send their **local model updates** `W_k` to the server.
+4. The server performs a **weighted average** using mixing weights `p_k` to produce the new global model:
 
-\[
-\mathbf{W} = \sum_{k=1}^{K} p_k \mathbf{W}_k
-\]
-
-This method is simple and effective but assumes that:
-- All devices use the **same full model**
-- **Data is IID or not severely non-IID**
-- Communication and inference cost of full model is acceptable
-
-These assumptions **break down in heterogeneous and resource-limited settings**, motivating Hermes.
+W = sum_{k=1}^{K} p_k * W_k
 
 
-
-
-
+This method is simple and effective but relies on key assumptions:
+- All devices use the **same full model** architecture.
+- Data is **IID** or only mildly non-IID.
 
 
 
