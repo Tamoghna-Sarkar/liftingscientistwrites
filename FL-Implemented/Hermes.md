@@ -178,6 +178,42 @@ This demonstrates a key challenge:
 
 Hence, **model personalization** becomes essential for effective FL. Hermes is introduced to address this exact problem — by enabling each client to learn a **personalized subnetwork**, while still benefiting from global coordination.
 
+#### 💡 Why Use VGG16 and Inception-v4 on CIFAR-10?
+
+Although CIFAR-10 is a small image dataset (32×32 images, 10 classes), the Hermes paper uses **large models** like **VGG16** and **Inception-v4**. This may seem unusual at first, but there are good reasons:
+
+---
+
+**1. Stress-Testing Communication Overhead**
+
+- VGG16 and Inception-v4 are **deep CNNs with tens of millions of parameters**.
+- Using these models helps **expose the communication bottlenecks** of standard FL approaches like FedAvg.
+- For instance, FedAvg incurs **10.59 TB** (VGG16) and **32.22 TB** (Inception-v4) over 500 rounds — a massive burden for edge devices.
+
+---
+
+**2. Real-World Model Complexity**
+
+- Many mobile applications (e.g., camera-based AI, AR, security monitoring) require **large and expressive models**.
+- Training such models in an FL setup mirrors the **real deployment constraints** faced in edge AI scenarios.
+- Hermes is designed to make these deployments practical.
+
+---
+
+**3. Separation of Dataset vs. Model Role**
+
+- **CIFAR-10** is used to simulate **non-IID data scenarios**: each device has 2 classes only.
+- **VGG16/Inception** are used to simulate **heavy model communication and inference load**.
+- The focus is not on beating benchmarks, but on measuring:
+  - Communication cost
+  - Inference latency
+  - Personalization effectiveness
+
+---
+
+➡️ In summary, using large models on small datasets helps evaluate **system-level performance** of FL methods, which is central to Hermes' goals.
+
+
 
 
 
