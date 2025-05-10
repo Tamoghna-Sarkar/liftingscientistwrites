@@ -292,6 +292,125 @@ Where:
 
 Hermes capitalizes on structured pruning to make FL more practical and personalized, especially under heterogeneous, resource-constrained environments.
 
+## 3.2 Learn Subnetwork for Joint Efficiency and Personalization
+
+Hermes departs from traditional FL frameworks by having each device learn a **sparse subnetwork** — a smaller, personalized model — using its local data. The subnetwork is then communicated to the central server instead of the full model.
+
+The key idea:  
+> Learn a subnetwork that balances **communication efficiency**, **inference efficiency**, and **personalization**.
+
+This is achieved using **structured pruning** — a hardware-friendly technique that removes **entire filters, channels, or neurons** from the model.
+
+---
+
+### 🔍 Why Structured Pruning?
+
+There are two types of pruning:
+- **Unstructured Pruning**:
+  - Removes individual weights randomly.
+  - Offers high compression but results in irregular models that are inefficient on real hardware.
+- **Structured Pruning**:
+  - Removes full filters, channels, rows, or columns.
+  - Produces regular, clean subnetworks that run efficiently on mobile/edge devices.
+
+Hermes uses **structured pruning** to:
+- Compress models in a predictable way
+- Enable devices to adapt model size based on local data
+- Reduce bandwidth and inference latency
+
+---
+
+### 📐 Structured Sparsity Regularization
+
+To prune during training, Hermes adds a **structured regularization term** to the loss function:
+
+F(W) = F_D(W) + λ * R(W)
+
+
+Where:
+- `F_D(W)` is the standard training loss on local data
+- `R(W)` is the structured sparsity regularizer
+- `λ` is a hyperparameter controlling the strength of pruning
+
+---
+
+### 🔧 Breakdown of the Regularizer
+
+Hermes splits the regularization into two parts:
+
+R(W) = R_conv(W) + R_fc(W)
+
+
+#### 🔹 R_conv(W): for Convolutional Layers
+
+Encourages filter-wise and channel-wise sparsity:
+
+
+R_conv(W) = ∑ over conv layers l [
+∑ over filters f_l: ||W_f_l,:,:,:||g +
+∑ over input channels ch_l: ||W:ch_l,:,:||_g
+]
+
+
+- `|| · ||_g` is the **group Lasso norm**, which promotes sparsity at the filter/channel level.
+- Filters and channels with small norm are pruned entirely.
+
+#### 🔹 R_fc(W): for Fully Connected Layers
+
+Encourages row-wise and column-wise sparsity:
+
+R_fc(W) = ∑ over fc layers l [
+∑ over rows: ||W_row_l,:||g +
+∑ over columns: ||W:col_l||_g
+]
+
+
+- Promotes dropping full neurons in input/output layers.
+
+---
+
+### 🧠 How the Device Knows What to Prune
+
+During training:
+1. Each device tracks which filters, channels, rows, or columns have **low group norm**.
+2. These are considered **unimportant** to its task.
+3. A binary mask `M_k` is generated to **retain only the important parts**.
+4. The subnetwork `W_k = W ⊙ M_k` is used for further training and communication.
+
+---
+
+### 🔁 Subnetwork Evaluation and Update
+
+At each communication round:
+- The device evaluates the current subnetwork on its **local validation set**.
+- If performance is good and the **pruning rate** hasn’t reached the target:
+  - Continue pruning (make the model even smaller)
+- If performance drops:
+  - Retain the current subnetwork structure
+
+---
+
+### 📊 Figure 4 Explained
+
+- **(a)**: Parameter matrix layout by channel for each device.
+- **(b)**: Structured pruning example — entire channels (orange/white) are removed.
+- **(c)**: Unstructured pruning — scattered weights removed, resulting in irregular patterns.
+
+---
+
+### ✅ Benefits of Structured Pruning in Hermes
+
+| Feature                  | Benefit                                  |
+|--------------------------|-------------------------------------------|
+| Personalized Subnetworks | Adapted to device-specific data           |
+| Structured Compression   | Efficient to run on real hardware         |
+| Lower Communication Cost | Fewer parameters are transmitted          |
+| Faster Inference         | Sparse models execute faster on devices   |
+
+---
+
+Hermes uses structured pruning to learn compact, personalized models that are better suited for non-IID data and low-resource devices, enabling scalable and efficient Federated Learning.
+
 
 
 
