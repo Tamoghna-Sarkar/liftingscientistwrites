@@ -824,6 +824,36 @@ Recent work shows that **FL can leak private info** via gradients or model updat
 📌 **Conclusion**: Hermes is an efficient, generalizable, and privacy-conscious FL framework that performs well under non-IID, resource-constrained settings typical of mobile and edge devices.
 
 
+## Real-Time Deployment and System Setup
+
+Hermes is evaluated in a real-world federated learning (FL) deployment using actual mobile devices. The implementation is not limited to simulation; it includes training and inference on-device with real energy and runtime monitoring.
+
+### Number of Clients per Round
+
+- Hermes uses **20 client devices** participating in each communication round.
+- Devices are selected randomly from the pool in each round.
+- Each selected client trains its local model for **5 local epochs** per round.
+
+### Hardware and Software Setup
+
+| Component         | Specification                                      |
+|------------------|----------------------------------------------------|
+| Client Devices    | Google Pixel 3 smartphones                        |
+| OS and Hardware   | Android 9.0, 3-core CPU                           |
+| Server Machine    | Intel Xeon E5-2630 @ 2.6GHz, 128 GB RAM           |
+| Framework         | PyTorch 1.5                                       |
+| Communication     | Federated learning protocol with 20 devices/round |
+| Data Partitioning | Non-IID shards (e.g., 2-class splits for CIFAR-10)|
+| Energy Monitoring | Monsoon Power Monitor [38]                        |
+
+### Key Deployment Characteristics
+
+- The FL training process is **fully executed on-device** using local data and model pruning.
+- **Structured sparse models** are trained and communicated.
+- The runtime efficiency (latency, memory, and energy) is measured directly on physical devices.
+- Power consumption is tracked using an external monitoring tool (Monsoon Power Monitor), capturing real-world energy usage during inference.
+
+This real deployment highlights the practicality and efficiency of Hermes in mobile settings under realistic constraints.
 
 
 
