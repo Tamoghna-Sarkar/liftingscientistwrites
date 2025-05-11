@@ -512,6 +512,11 @@ W_A = W_merged ⊙ [1, 1, 0, 0, 1]
 By aggregating only shared parts and reusing binary masks to recover personalized structures, Hermes effectively enables both **collaborative learning** and **local adaptation** in a communication-efficient way.
 
 
+## 🧠 Algorithm 1: Training Algorithm of Hermes (Compact Line-by-Line Explanation)
+
+This algorithm outlines the training process in Hermes, where a global model `W` is trained collaboratively across multiple devices with local, private, and non-IID data `(D1, ..., DN)`. The server first initializes the full dense global model `W`. For each communication round `T`, it samples a subset `k = max(N × K, 1)` of the available devices, ensuring at least one device is selected. This subset `S_c` is randomly drawn from the device pool `{C1, ..., CN}`. Then, for each device `C_k` in `S_c` (executed in parallel), the device extracts its own subnetwork by applying its mask `M_k^T` to the global model: `W_k^T = W^T ⊙ M_k^T`. The device then performs local training on this subnetwork using the `ClientUpdate` function and returns the updated subnetwork parameters `W_k^{T+1}`. After all participating devices finish their local updates, the server aggregates the set `{W_k^{T+1}}` using the personalization-preserving aggregation strategy: only the intersected parameters (present across devices) are averaged, and the rest are left unchanged. 
+
+On the client side, `ClientUpdate(C_k, W_k^T)` begins by evaluating the subnetwork `W_k^T` on the local validation data `D_k^{val}` to obtain an accuracy score `acc`. If this accuracy exceeds a predefined threshold `acc_threshold` and the current pruning rate `r_k^T` is still less than the target pruning rate `r_target`, the client prunes `W_k^T` further using a fixed rate `r_p`, generating a new binary mask `M_k^{T+1}`. The local training data `D_k^{train}` is then split into batches `B`, and for `E` local epochs, the device performs stochastic gradient descent only over active (unpruned) weights: for each batch `b`, the update rule is `W_k^T ← W_k^T ⊙ M_k^T − η ∇F_k(W_k^T ⊙ M_k^T, b)`, where `η` is the learning rate and `F_k` is the loss function. Finally, the updated subnetwork weights `W_k^{T+1}` and the new mask `M_k^{T+1}` are returned to the server for aggregation in the next communication round.
 
 
 
