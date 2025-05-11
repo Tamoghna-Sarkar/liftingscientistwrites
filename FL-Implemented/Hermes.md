@@ -519,6 +519,105 @@ This algorithm outlines the training process in Hermes, where a global model `W`
 On the client side, `ClientUpdate(C_k, W_k^T)` begins by evaluating the subnetwork `W_k^T` on the local validation data `D_k^{val}` to obtain an accuracy score `acc`. If this accuracy exceeds a predefined threshold `acc_threshold` and the current pruning rate `r_k^T` is still less than the target pruning rate `r_target`, the client prunes `W_k^T` further using a fixed rate `r_p`, generating a new binary mask `M_k^{T+1}`. The local training data `D_k^{train}` is then split into batches `B`, and for `E` local epochs, the device performs stochastic gradient descent only over active (unpruned) weights: for each batch `b`, the update rule is `W_k^T ← W_k^T ⊙ M_k^T − η ∇F_k(W_k^T ⊙ M_k^T, b)`, where `η` is the learning rate and `F_k` is the loss function. Finally, the updated subnetwork weights `W_k^{T+1}` and the new mask `M_k^{T+1}` are returned to the server for aggregation in the next communication round.
 
 
+## 4. Theoritical Convergence Analysis is SKIPPED
+
+## 5. Evaluations: Explanation and Setup
+
+This section evaluates Hermes under real-world FL settings and compares it against several popular baselines. The experiments focus on verifying Hermes’ ability to achieve high accuracy while reducing memory, energy, and communication costs — especially in non-IID environments.
+
+---
+
+### 5.1 Applications, Datasets, and Models
+
+To test Hermes’ generality, two types of mobile AI applications are used:
+
+#### 🧠 Application #1: Image Classification
+
+- **Why**: A fundamental deep learning task, increasingly performed on smartphones.
+- **Models Used**: VGG16 for EMNIST and CIFAR-10.
+- **Datasets**:
+  - **EMNIST**: A handwriting dataset where each writer’s data is assigned to a different device → non-IID by writer.
+  - **CIFAR-10**: Each device is assigned 2 classes out of 10, with an imbalanced distribution across devices → non-IID by label.
+
+This simulates realistic mobile data heterogeneity, such as each user primarily capturing a small subset of image types.
+
+#### 🏃 Application #2: Human Activity Recognition (HAR)
+
+- **Why**: Smartphones often track human activity using motion sensors (e.g., for fitness or health apps).
+- **Dataset**: HAR dataset with 6 activity classes collected from 30 individuals.
+- **Model**: A 3-layer fully connected neural network.
+- **Data Split**: Each user’s data is assigned to one device, making it naturally non-IID.
+
+---
+
+### 📊 Dataset Summary (Table 1)
+
+| Dataset  | # Devices | # Classes | Non-IID |
+|----------|-----------|-----------|---------|
+| EMNIST   | 2414      | 64        | ✅      |
+| CIFAR-10 | 400       | 10        | ✅      |
+| HAR      | 30        | 6         | ✅      |
+
+---
+
+### 5.2 System Implementation
+
+Hermes is deployed in a real FL setup:
+
+- **Client Devices**: Google Pixel 3 smartphones (Android 9.0, 3-core CPU).
+- **Server Machine**: Intel Xeon E5-2630 @ 2.6GHz, 128GB RAM.
+- **Framework**: PyTorch 1.5.
+- **Power Measurement**: Monsoon Power Monitor [38] used to track energy consumption during runtime.
+
+#### ⚙️ FL Protocol Configuration
+
+- 20 clients are selected randomly per round.
+- Each client trains for 5 local epochs per round.
+- **Pruning and training parameters**:
+  - `r_p = 0.2`: prune 20% of weights per round.
+  - `B = 16`: batch size.
+  - `acc_threshold = 0.5`: stop pruning if accuracy drops below this.
+  - `r_target = 0.3`: target pruning ratio (i.e., 30% of model pruned at most).
+
+---
+
+### 5.3 Experimental Setup
+
+#### 🔁 Compared Baselines
+
+1. **Standalone**: Trains only on local data with no collaboration. Represents pure personalization without communication.
+2. **FedAvg [36]**: Classical FL baseline with full model synchronization.
+3. **Top-k [1]**: Compresses updates by sending only the k-largest gradient elements to reduce bandwidth.
+4. **Per-FedAvg [12]**: Adds MAML-based meta-learning to FedAvg. Allows per-device fine-tuning from a shared initialization.
+5. **LG-FedAvg [32]**: State-of-the-art FL method that jointly trains global and local representations for both personalization and compression.
+
+All methods use the same model architectures and data splits. Hermes and all baselines are trained for the same number of communication rounds and local epochs, except Standalone (which trains longer to compensate for lack of collaboration).
+
+---
+
+### 📏 Evaluation Metrics
+
+Two major metric categories are used:
+
+#### 1. Training Quality
+- **Inference Accuracy**: Accuracy on each device’s test set.
+- **Communication Cost**: Time cost for uploading/downloading updates in each round.
+
+#### 2. Runtime Efficiency
+- **Memory Footprint**: RAM required by each model during inference.
+- **Inference Latency**: Average time taken per prediction.
+- **Energy Consumption**: Battery power used per inference (measured on real devices).
+
+These metrics comprehensively capture both model quality and resource usage — essential for real-world FL deployment.
+
+
+
+
+
+
+
+
+
 
 ---
 
