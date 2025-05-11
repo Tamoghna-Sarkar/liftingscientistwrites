@@ -611,8 +611,217 @@ Two major metric categories are used:
 These metrics comprehensively capture both model quality and resource usage — essential for real-world FL deployment.
 
 
+## 5.4 Convergence Speed
+
+To validate Hermes' training efficiency, the authors compare its convergence behavior with that of two popular baselines: **FedAvg** and **Top-k**. Figure 6 presents the training loss curves across 100 communication rounds for three datasets: CIFAR-10, EMNIST, and HAR.
+
+### 📊 Figure 6 Observations
+
+- **Hermes** (red line) achieves the **fastest convergence** and the **lowest final training loss** in all three tasks.
+- **FedAvg** (green) and **Top-k** (blue) both converge slower and tend to plateau at higher loss values.
+- This confirms Hermes' ability to learn effectively despite non-IID data and partial model sharing.
+
+➡️ **Conclusion**: Hermes is significantly more communication-efficient and converges faster than conventional FL baselines by training compact, personalized subnetworks.
+
+---
+
+## 5.5 Inference Accuracy vs. Communication Cost
+
+The authors also evaluate the tradeoff between **model performance** (accuracy) and **communication cost** using Figure 7. This plot compares Hermes to five baselines:
+
+- **Standalone**
+- **FedAvg**
+- **Top-k**
+- **Per-FedAvg**
+- **LG-FedAvg**
+
+Each point in the figure represents one method’s position in the **accuracy vs. communication cost space** for each dataset.
+
+### 📊 Figure 7 Observations
+
+- Hermes (⭐) consistently appears in the **lower-right** region — meaning **low communication cost** and **high accuracy**.
+- While Top-k offers the **lowest communication cost**, it suffers from poor accuracy.
+- Per-FedAvg and LG-FedAvg provide good accuracy but at much higher communication costs.
+- Hermes strikes the **best balance** across all three datasets.
+
+---
+
+### 🔢 Quantitative Results
+
+#### 📌 Hermes vs. LG-FedAvg
+- **Accuracy Improvement**:
+  - +8.93% (CIFAR-10)
+  - +3.23% (EMNIST)
+  - +0.53% (HAR)
+- **Communication Reduction**:
+  - 1.96× (average)
+
+#### 📌 Hermes vs. Per-FedAvg
+- **Communication Cost Reduced**:
+  - 3.05× (CIFAR-10)
+  - 3.25× (EMNIST)
+  - 3.48× (HAR)
+- **Accuracy Gain**:
+  - +12.55%, +3.46%, and +0.6% respectively
+
+#### 📌 Hermes vs. Top-k
+- **Higher Accuracy** by:
+  - +32.17% (CIFAR-10)
+  - +8.71% (EMNIST)
+  - +2.39% (HAR)
+
+➡️ **Conclusion**: Hermes may not always be the single best in either accuracy or communication, but it offers the **most balanced performance**, making it ideal for real-world FL deployments where both factors matter.
+
+## 5.6 Hyper-Parameter Evaluation
+
+The authors conduct a series of experiments to analyze how different **hyperparameters** affect Hermes' performance, focusing on:
+
+### 📌 Number of Participating Devices
+
+- **Setup**: Devices per round = {20, 40, 80}
+- **Datasets**: IC-EMNIST, IC-CIFAR10
+- **Observation** (Figure 8): 
+  - Increasing the number of participating devices per round **slightly improves accuracy**.
+  - On IC-CIFAR10, accuracy improves by 1.75% when increasing from 20 to 80 devices.
+  - However, this also causes **4× higher bandwidth usage**, limiting practical benefit.
+
+➡️ **Conclusion**: More devices can help, but the communication overhead grows significantly.
+
+---
+
+### 📌 Data Volume and Balance Rate
+
+Hermes is evaluated under **challenging conditions** where devices have:
+- Very **limited data**, and
+- **Unbalanced class distributions**
+
+- **Setup**:
+  - Number of samples/class = {5, 10, 20}
+  - Balance rate = {0.25, 0.5, 0.75, 1.0}
+- **Balance Rate Definition**:
+  - Ratio of the minor class to major class per device
+  - Lower = more unbalanced
+
+- **Observation** (Figure 9):
+  - **More data** = better performance
+  - **More balance** = better performance
+  - For instance:
+    - At 20 samples/class:
+      - Accuracy drops from 84.35% → 83.67% when balance rate drops from 1.0 → 0.5
+    - At balance rate 0.75:
+      - Accuracy drops by only 0.92% when reducing from 10 to 5 samples/class
+
+➡️ **Conclusion**: Hermes remains **robust** even under extreme data imbalance and scarcity.
+
+---
+
+### 📌 Target Pruning Rate (r_target)
+
+- **r_target** defines the **final sparsity goal** for each device.
+- Higher `r_target` = more pruning = smaller subnetwork
+
+- **Setup**:
+  - r_target = {0.3, 0.5, 0.8}
+- **Observation** (Table 2 summary):
+  - On IC-CIFAR10:
+    - Accuracy drops slightly from 86.35% → 85.72% when increasing pruning from 0.3 → 0.8
+    - Communication cost drops **46%**
+
+➡️ **Conclusion**: Hermes can trade off **minimal accuracy loss** for **significant communication reduction** by increasing model sparsity.
+
+---
+
+## 5.7 Runtime Performance
+
+Hermes offers major advantages in runtime resource usage due to its **structured sparse subnetworks**:
+
+### 🧠 Memory Footprint
+
+- Each device only needs to store and run its **own pruned model**.
+- Authors measure model size to quantify memory reduction.
+- Hermes’ personalized models are **much smaller** than the full dense model used in FedAvg or other baselines.
+
+➡️ **Conclusion**: Hermes is more suitable for mobile and embedded settings due to **smaller memory and compute requirements**.
 
 
+## 5.7 Runtime Performance
+
+Hermes offers significant runtime advantages due to its **structured sparsity**, which allows each device to store and run a smaller, personalized subnetwork.
+
+---
+
+### 📦 Memory Footprint (Table 3)
+
+Hermes significantly reduces the model size compared to full baselines.
+
+| Application | Hermes Model Size (MB) | Baseline Model Size (MB) | Reduction |
+|-------------|-------------------------|---------------------------|-----------|
+| IC-CIFAR10  | 161.16                  | 537.21                    | ~70%      |
+| IC-EMNIST   | 161.43                  | 538.09                    | ~70%      |
+| HAR         | 1.32                    | 4.41                      | ~70%      |
+| **All Apps**| **323.91**              | **1081.24**               | **757 MB**|
+
+➡️ These savings demonstrate Hermes’ deployability across multiple applications on smartphones.
+
+---
+
+### ⚡ Inference Speedup (Figure 10)
+
+Hermes achieves faster inference due to the reduced model size.
+
+| Application | Inference Speedup |
+|-------------|-------------------|
+| IC-CIFAR10  | 1.83×             |
+| IC-EMNIST   | 1.79×             |
+| HAR         | 1.82×             |
+
+➡️ This is especially useful in real-time mobile settings where low-latency responses are critical.
+
+---
+
+### 🔋 Energy Consumption (Figure 11)
+
+Hermes consumes less energy during inference.
+
+| Application | Energy Saving |
+|-------------|----------------|
+| IC-CIFAR10  | 1.80×          |
+| IC-EMNIST   | 1.76×          |
+| HAR         | 1.78×          |
+
+➡️ Hermes is well-suited for battery-constrained environments like smartphones and IoT.
+
+---
+
+## 6. Discussion
+
+---
+
+### 🔁 Generality of Hermes
+
+Although tested on two applications (image classification and activity recognition), Hermes can generalize to many mobile AI tasks such as:
+
+- Next-character prediction (e.g., using Shakespeare or Sentiment140 datasets)
+- Mobile keyboard prediction
+- Sensor-based behavior modeling
+
+➡️ Its design of **structured, personalized sparse models** makes it broadly applicable.
+
+---
+
+### 🔐 Privacy Leakage Mitigation
+
+Recent work shows that **FL can leak private info** via gradients or model updates. Hermes may inherently reduce this risk:
+
+- It sends **only part of the model** (subnetworks), not the entire model.
+- **Pruned gradients** are never uploaded.
+- This limits how much data a malicious server could use in a **model inversion or property inference attack**.
+
+➡️ Hermes is not a complete privacy framework, but it provides a **structural advantage** in privacy-aware FL systems.
+
+---
+
+📌 **Conclusion**: Hermes is an efficient, generalizable, and privacy-conscious FL framework that performs well under non-IID, resource-constrained settings typical of mobile and edge devices.
 
 
 
