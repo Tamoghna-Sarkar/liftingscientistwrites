@@ -412,9 +412,104 @@ At each communication round:
 Hermes uses structured pruning to learn compact, personalized models that are better suited for non-IID data and low-resource devices, enabling scalable and efficient Federated Learning.
 
 
+## 3.3 Personalization-Preserving Aggregation
+
+In each communication round, Hermes enables participating devices to send their **personalized subnetworks** to the central server for aggregation. However, unlike traditional FL methods such as FedAvg, **Hermes cannot average all model parameters** — because each device may have a **different subnetwork structure** due to structured pruning.
+
+---
+
+### ❌ Problem with Traditional Aggregation
+
+- In FedAvg, the server averages **all parameters**, assuming that each device trains the **same full model**.
+- But in Hermes, different devices may **prune different layers, channels, or filters**.
+- Directly averaging all parameters would **destroy the personalized structure** learned by each device.
+
+---
+
+### ✅ Hermes' Solution: Personalization-Preserving Aggregation
+
+Hermes uses a **mask-aware aggregation strategy**:
+- It only **averages the parameters that multiple devices share** — i.e., the **intersected parameters**.
+- Any parameter that is **unique to a device’s subnetwork (i.e., non-intersected)** is left **unchanged**.
+
+This helps:
+- Share knowledge where overlap exists
+- Retain device-specific adaptations in pruned regions
+
+---
+
+### 🔁 Workflow Summary
+
+1. Each device sends:
+   - Its subnetwork weights: `W_k`
+   - Its binary mask: `M_k`
+2. The server:
+   - Identifies **intersected parameters** using the masks from all devices.
+   - Averages only the intersected parameters.
+   - Leaves all other parameters untouched.
+3. Server sends back:
+   - The merged parameter matrix (`W_merged`)
+4. Each device applies its own mask again:
+
+W_k^{T+1} = W_merged ⊙ M_k
+
+This ensures:
+- Intersected weights are updated from global aggregation
+- Personalized, non-intersected weights are preserved
+
+---
+
+### 📊 Toy Example
+
+Imagine a model with **5 parameters**:  
+
+[W1, W2, W3, W4, W5]
 
 
+#### Device A's Mask:
 
+[1, 1, 0, 0, 1] → keeps W1, W2, W5
+
+
+#### Device B's Mask:
+
+[1, 0, 1, 0, 1] → keeps W1, W3, W5
+
+
+#### Intersected Parameters (shared):
+- W1 and W5 (kept by both A and B)
+
+#### Non-Intersected:
+- W2 (only on A)
+- W3 (only on B)
+
+#### At the Server:
+- Average W1 and W5
+- Leave W2 and W3 unchanged
+
+#### When Device A receives `W_merged`:
+- Applies its mask:
+
+W_A = W_merged ⊙ [1, 1, 0, 0, 1]
+
+- Gets:
+- Updated W1 and W5 (from aggregation)
+- Keeps its own W2
+- Ignores W3 and W4 (pruned anyway)
+
+---
+
+### ✅ Benefits
+
+| Feature                         | Benefit                                      |
+|--------------------------------|----------------------------------------------|
+| Intersection-only aggregation  | Prevents corruption of personalized structure |
+| Lightweight binary mask        | Enables accurate parameter alignment          |
+| Personalized + Collaborative   | Balances individual learning and global sharing |
+
+---
+
+By aggregating only shared parts and reusing binary masks to recover personalized structures, Hermes effectively enables both **collaborative learning** and **local adaptation** in a communication-efficient way.
 
 
 
