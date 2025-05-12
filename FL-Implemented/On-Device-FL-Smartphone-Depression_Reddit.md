@@ -1,8 +1,4 @@
-# Practical FL Evaluation Using Real Devices — Paper Summaries
-
----
-
-## 1. On-device Federated Learning in Smartphones for Detecting Depression from Reddit Posts  
+# On-device Federated Learning in Smartphones for Detecting Depression from Reddit Posts  
 **Authors:** Mustofa Ahmed, Abdul Muntakim, Nawrin Tabassum, Mohammad Asifur Rahim, Faisal Muhammad Shah  
 **arXiv:** [arXiv:2410.13709v2](https://arxiv.org/abs/2410.13709)  
 **GitHub Summary by:** Tamoghna Sarkar
