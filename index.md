@@ -7,10 +7,11 @@
 - [09 November 2024](./Daily-Logs/log-2024-11-09.md)
  
 
-## PhD Journey: Brick by Brick (Will start logging 2025)
+## PhD Journey: Brick by Brick 
 
 ### 🧠 Federated Learning (FL)
 - [Hermes: FL](./FL-Implemented/Hermes.md)
+- 
 
 
 ### 🌐 Networking Papers
