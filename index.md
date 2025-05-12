@@ -10,8 +10,8 @@
 ## PhD Journey: Brick by Brick 
 
 ### 🧠 Federated Learning (FL)
-- [Hermes: FL](./FL-Implemented/Hermes.md)
-- 
+- [Hermes: ACM MobiCom ’21](./FL-Implemented/Hermes.md)
+- [FSReal: Alibaba Arxiv '23](./FL-Implemented/FSReal.md)
 
 
 ### 🌐 Networking Papers
