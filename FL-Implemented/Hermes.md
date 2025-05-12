@@ -862,5 +862,5 @@ This real deployment highlights the practicality and efficiency of Hermes in mob
 
 ## 📎 Reference
 
-Li, Ang, et al. *Hermes: An Efficient Federated Learning Framework for Heterogeneous Mobile Clients*. [Add full citation and link here]
+Li, Ang, et al. *Hermes: An Efficient Federated Learning Framework for Heterogeneous Mobile Clients*. [[Link to Paper](https://www.ang-li.com/assets/pdf/hermes.pdf)]
 
