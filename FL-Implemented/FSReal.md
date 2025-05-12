@@ -1,5 +1,22 @@
 # FS-Real: Towards Real-World Cross-Device Federated Learning
 
+**Authors**: Daoyuan Chen, Dawei Gao, Yuexiang Xie, Xuchen Pan, Zitao Li, Yaliang Li, Bolin Ding, Jingren Zhou  
+**Conference**: [arXiv preprint arXiv:2303.13363, March 2023]  
+**GitHub Summary by**: Tamoghna Sarkar
+
+## 🌐 Motivation
+
+Federated Learning (FL) research often assumes homogeneous devices and idealized simulations, but **real-world deployments involve highly heterogeneous mobile devices** (in compute, bandwidth, and availability) and operate at large scales. Most FL frameworks fail to capture this complexity, limiting their practical value.
+
+FS-Real addresses this gap by providing a **scalable, deployable FL system** that supports:
+
+- **Real Android devices** (e.g., RedMi K40 phones)
+- **Simulated devices** with controllable heterogeneity in compute, memory, and bandwidth
+- **Advanced FL techniques** such as personalization, communication compression, and asynchronous aggregation
+
+It aims to enable more realistic evaluations of FL algorithms and bridge the gap between theory and deployment.
+
+
 ## What This Paper Does
 
 - Proposes **FS-Real**, a practical system for cross-device Federated Learning (FL) that supports:
