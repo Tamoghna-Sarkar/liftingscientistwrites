@@ -856,8 +856,6 @@ Hermes is evaluated in a real-world federated learning (FL) deployment using act
 This real deployment highlights the practicality and efficiency of Hermes in mobile settings under realistic constraints.
 
 
-
-
 ---
 
 ## 📎 Reference
