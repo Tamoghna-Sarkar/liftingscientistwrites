@@ -4,6 +4,11 @@
 **Affiliations**: University of Murcia, University of Zurich, armasuisse  
 **arXiv**: [2306.09750v4](https://arxiv.org/abs/2306.09750)  
 
+## Motivation
+
+Traditional Centralized Federated Learning (CFL) approaches rely on a central server to aggregate participants' models, leading to potential issues such as communication bottlenecks, single points of failure, and reliance on a central entity. Decentralized Federated Learning (DFL) addresses these challenges by enabling decentralized model aggregation and minimizing dependency on a central server. However, existing DFL platforms struggle with managing heterogeneous federation network topologies, adapting to virtualized or physical deployments, and providing comprehensive metrics for evaluating different federation scenarios.
+
+
 
 ## Contributions
 
@@ -17,9 +22,6 @@
 
 - **Performance Evaluation**: Assessed the platform's performance using various Key Performance Indicators (KPIs), including model F1 score, training time, communication latency, and resource usage. The evaluations showed consistent performance and adaptability, achieving F1 scores of 91%, 98%, and 91.2% for cyberattack detection, MNIST, and CIFAR-10 classification tasks, respectively, and reducing training time by 32% compared to centralized approaches.
 
-## Motivation
-
-Traditional Centralized Federated Learning (CFL) approaches rely on a central server to aggregate participants' models, leading to potential issues such as communication bottlenecks, single points of failure, and reliance on a central entity. Decentralized Federated Learning (DFL) addresses these challenges by enabling decentralized model aggregation and minimizing dependency on a central server. However, existing DFL platforms struggle with managing heterogeneous federation network topologies, adapting to virtualized or physical deployments, and providing comprehensive metrics for evaluating different federation scenarios.
 
 ## Architecture
 
