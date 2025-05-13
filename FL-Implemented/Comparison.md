@@ -10,7 +10,7 @@
 | **Evaluation Metrics** | Accuracy, system time, model fairness | Accuracy, latency, convergence, fault recovery | Mental health score prediction, resource stats | Lifecycle success rates, coordination overhead | Resource usage, model accuracy | Throughput, update delay, success rate |
 | **Privacy / Data Locality** | Yes (no raw data sharing) | Yes (production data localized) | Yes (mental health data remains local) | Yes | Yes | Yes |
 | **Training Framework** | PyTorch Mobile, custom Hermes runtime | Alibaba PAI-FL | Custom Android client + PyTorch | Custom orchestrator + FL backend | PyTorch variants + AWS pipeline | Lightweight orchestration layer |
-| **Experiment Scale(ALl had logical clients to show scale)** | ~20 devices per round (logical) | ~small # of real + synthetic clients | ~5 real smartphones, tablets | 2 Android, 1 Iphone, 2 AWS Farm Device(Iphone, Android) | ~30 devices via AWS Farm | 5 Rpi4 + 3 Rock64  |
+| **Experiment Scale(ALl had logical clients to show scale)** | ~20 devices per round (logical) | ~small # of real + synthetic clients | ~5 real smartphones, tablets | 2 Android, 1 Iphone, 20 AWS Farm Device(Iphone, Android) | ~30 devices via AWS Farm | 5 Rpi4 + 3 Rock64  |
 | **Emphasis** | **Heterogeneity-aware FL training** | **Cross-device fault recovery, realism** | **Health FL with real population** | **Manageability, fault resilience** | **FL porting, risk mitigation** | **Decentralized orchestration + hybrid testbeds** |
 
 
