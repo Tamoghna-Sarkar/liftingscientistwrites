@@ -12,10 +12,10 @@
 ### 🧠 Federated Learning (FL)
 - [Hermes: ACM MobiCom ’21](./FL-Implemented/Hermes.md)
 - [FSReal: Alibaba Arxiv '23](./FL-Implemented/FSReal.md)
-- [Smartphone FL for Depression: Arxiv'25](./FL-Implemented/On-Device-FL-Smartphone-Depression_Reddit.md)
-- [FedOps: Electronics 2024](./FL-Implemented/Fedops.md)
 - [FLINT LinkedIn: MLSys'23](.//FL-Implemented/FLINT.md)
+- [FedOps: Electronics 2024](./FL-Implemented/Fedops.md)
 - [Fedstellar: Arxiv '24](./FL-Implemented/Fedstellar.md)
+- [Smartphone FL for Depression: Arxiv'25](./FL-Implemented/On-Device-FL-Smartphone-Depression_Reddit.md)
 - [COMPARISON HIGHLIGHTS: above papers](./FL_Implemented/Comparison.md)
 
 
