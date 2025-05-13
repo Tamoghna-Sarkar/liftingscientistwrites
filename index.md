@@ -16,7 +16,7 @@
 - [FedOps: Electronics 2024](./FL-Implemented/Fedops.md)
 - [FLINT LinkedIn: MLSys'23](.//FL-Implemented/FLINT.md)
 - [Fedstellar: Arxiv '24](./FL-Implemented/Fedstellar.md)
-
+- [COMPARISON HIGHLIGHTS: above papers](./FL_Implemented/Comparison.md)
 
 
 ### 🌐 Networking Papers
