@@ -16,7 +16,7 @@
 - [FedOps: Electronics '24](./FL-Implemented/Fedops.md)
 - [Fedstellar: Arxiv '24](./FL-Implemented/Fedstellar.md)
 - [Smartphone FL for Depression: Arxiv'25](./FL-Implemented/On-Device-FL-Smartphone-Depression_Reddit.md)
-- [COMPARISON HIGHLIGHTS: above papers](./FL_Implemented/Comparison.md)
+- [COMPARISON HIGHLIGHTS: above papers](./FL-Implemented/Comparison.md)
 
 
 ### 🌐 Networking Papers
