@@ -64,10 +64,9 @@
 
 ---
 
-#### 🧬 Miscellaneous
+#### 🧬 Miscellaneous Networking Papers
 - [Intanagonwiwat: Directed Diffusion](./Networking/Intanangonwiwat00a_directeddiffusion.md)
 - [Levchenko](./Networking/Levchenko.md)
-- [MIDTERM2 Paper List](./Networking/MIDTERM2paperlist.md)
 - [Boettger](./Networking/boettger.md)
 - [Caesar: Practical BGP](./Networking/caeser.md)
 - [Cardwell-BBR: Bottleneck Bandwidth and RTT](./Networking/cardwell-bbr.md)
@@ -82,7 +81,6 @@
 - [Quan: Trinocular](./Networking/quan_trinocular.md)
 - [Shaikh](./Networking/shaikh.md)
 - [Shenker: Fundamental Design Issues](./Networking/shenker_FundamentalDesignIssues.md)
-- [Test AC](./Networking/test_ac.md)
 
 
 
