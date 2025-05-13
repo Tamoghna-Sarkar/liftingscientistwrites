@@ -13,8 +13,8 @@
 - [Hermes: ACM MobiCom ’21](./FL-Implemented/Hermes.md)
 - [FSReal: Alibaba Arxiv '23](./FL-Implemented/FSReal.md)
 - [Smartphone FL for Depression: Arxiv'25](./FL-Implemented/On-Device-FL-Smartphone-Depression_Reddit.md)
--[FedOps:Electronics 2024](./FL-Implemented/Fedops.md)
-
+- [FedOps: Electronics 2024](./FL-Implemented/Fedops.md)
+- [FLINT: MLSys'23](.//FL-Implemented/Flint.md)
 ### 🌐 Networking Papers
 
 - [Harmony: DC Congestion-Free](./Networking/Harmony.md)
