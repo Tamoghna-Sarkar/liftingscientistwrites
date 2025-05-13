@@ -21,9 +21,6 @@
 
 ### 🌐 Networking Papers
 
-- [Harmony: DC Congestion-Free](./Networking/Harmony.md)
-### 📡 Networking Papers
-
 #### 📈 Self-Similarity
 - [Leyland and Crovella: Self-Similar Traffic](./Networking/leyland_crovella.md)
 
