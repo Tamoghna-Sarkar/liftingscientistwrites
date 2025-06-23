@@ -18,6 +18,8 @@
 - [Smartphone FL for Depression: Arxiv'25](./FL-Implemented/On-Device-FL-Smartphone-Depression_Reddit.md)
 - [COMPARISON HIGHLIGHTS: above papers](./FL-Implemented/Comparison.md)
 
+### Personalized FL
+- [Personalized Federated Learning using Hypernetworks (pFedHN): Arxiv'21](./PFL/pFedHN.md)
 
 ### 🌐 Networking Papers
 
