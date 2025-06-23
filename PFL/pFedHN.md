@@ -126,3 +126,13 @@ For r = 1 to R:
     
     Compute local gradient update Δθᵢ
     Server update: ϕ ← ϕ - η ∇_ϕ h(vᵢ; ϕ)^T Δθᵢ
+
+
+
+test
+
+The personalized model is defined as \( \theta_i = h(v_i; \phi) \).
+
+$$
+\arg\min_{\phi} \frac{1}{n} \sum_{i=1}^{n} \mathcal{L}_i(h(v_i; \phi))
+$$
