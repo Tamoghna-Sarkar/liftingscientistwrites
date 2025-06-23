@@ -131,8 +131,10 @@ For r = 1 to R:
 
 test
 
-The personalized model is defined as \( \theta_i = h(v_i; \phi) \).
+Inline math: \( a^2 + b^2 = c^2 \)
+
+Block math:
 
 $$
-\arg\min_{\phi} \frac{1}{n} \sum_{i=1}^{n} \mathcal{L}_i(h(v_i; \phi))
+E = mc^2
 $$
