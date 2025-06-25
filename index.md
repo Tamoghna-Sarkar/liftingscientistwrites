@@ -20,7 +20,7 @@
 
 ### Personalized FL
 - [Personalized Federated Learning using Hypernetworks (pFedHN): Arxiv'21](./PFL/pFedHN.md)
-- [Learn What You Need in Personalized Federated Learning (Learn2Fed): Arxiv'24 ](./PFL/Learn2pFed.md)
+- [Learn What You Need in Personalized Federated Learning (Learn2pFed): Arxiv'24 ](./PFL/Learn2pFed.md)
 
 
 
