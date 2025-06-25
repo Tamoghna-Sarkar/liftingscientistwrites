@@ -16,16 +16,17 @@ Traditional federated learning approaches like FedAvg train a single global mode
 
 ### 2.1 Hypernetwork
 
-A **hypernetwork** is a neural network that generates the weights of another neural network (the target model). It takes client-specific input \( z^i \) (such as an ID or embedding) and outputs parameters for that client’s model:
+A **hypernetwork** is a neural network that generates the weights of another neural network (the target model). It takes client-specific input $z^i$ (such as an ID or embedding) and outputs parameters for that client’s model:
 
 $$
 \theta^i = H_\phi(z^i)
 $$
 
 Here:
-- \( H_\phi \) is the hypernetwork with parameters \( \phi \)
-- \( z^i \) is the input encoding or descriptor for client \( i \)
-- \( \theta^i \) is the personalized model for client \( i \)
+
+- $H_\phi$ is the hypernetwork with parameters $\phi$
+- $z^i$ is the input encoding or descriptor for client $i$
+- $\theta^i$ is the personalized model for client $i$
 
 ---
 
@@ -33,9 +34,9 @@ Here:
 
 | Property                  | FedAvg                                      | pFedHN                                                 |
 |--------------------------|----------------------------------------------|---------------------------------------------------------|
-| Model sent to clients    | Same global model \( \theta \)               | Personalized model \( \theta^i = H_\phi(z^i) \)         |
-| Client update            | Local training, return full model            | Local training, return gradient wrt \( \phi \)          |
-| Server update            | Average client models                        | Update hypernetwork \( \phi \)                          |
+| Model sent to clients    | Same global model $\theta$                   | Personalized model $\theta^i = H_\phi(z^i)$             |
+| Client update            | Local training, return full model            | Local training, return gradient wrt $\phi$              |
+| Server update            | Average client models                        | Update hypernetwork $\phi$                              |
 | Personalization          | None (or heuristic-based)                    | Built-in via per-client generation                      |
 | Communication cost       | Scales with model size                       | Independent of model size                               |
 
@@ -47,25 +48,30 @@ Here:
 
 1. **Model Generation**:
    - Server generates a model per client:
+
      $$
      \theta^i = H_\phi(z^i)
      $$
 
 2. **Local Training**:
-   - Client trains \( f_{\theta^i} \) on their private data using SGD.
+   - Client trains $f_{\theta^i}$ on their private data using SGD.
 
 3. **Gradient Computation**:
    - Client computes the loss:
+
      $$
      \mathcal{L}^i(\theta^i) = \frac{1}{m_i} \sum_{j=1}^{m_i} \ell_i(x_j, y_j; \theta^i)
      $$
-   - Then computes gradients w.r.t. \( \phi \):
+
+   - Then computes gradients w.r.t. $\phi$:
+
      $$
      \nabla_\phi \mathcal{L}^i = \left( \frac{\partial H_\phi(z^i)}{\partial \phi} \right)^T \nabla_{\theta^i} \mathcal{L}^i
      $$
 
 4. **Server Aggregation**:
-   - Server aggregates gradients across all selected clients and updates \( \phi \):
+   - Server aggregates gradients across all selected clients and updates $\phi$:
+
      $$
      \phi \leftarrow \phi - \eta \cdot \frac{1}{n} \sum_{i=1}^{n} \nabla_\phi \mathcal{L}^i
      $$
@@ -74,8 +80,8 @@ Here:
 
 ## 4. Communication Flow
 
-- **Server → Client**: Generated personalized model \( \theta^i \)
-- **Client → Server**: Gradient \( \nabla_\phi \mathcal{L}^i \)
+- **Server → Client**: Generated personalized model $\theta^i$
+- **Client → Server**: Gradient $\nabla_\phi \mathcal{L}^i$
 
 This avoids transferring full model weights or updates, making it scalable even for large target networks.
 
@@ -83,14 +89,14 @@ This avoids transferring full model weights or updates, making it scalable even 
 
 ## 5. Why This Still Personalizes
 
-Although all clients share the same hypernetwork \( H_\phi \), they provide different inputs \( z^i \), which encode their identity or task structure.
+Although all clients share the same hypernetwork $H_\phi$, they provide different inputs $z^i$, which encode their identity or task structure.
 
-- Each gradient update only nudges the part of \( H_\phi \) relevant to generating \( \theta^i \).
+- Each gradient update only nudges the part of $H_\phi$ relevant to generating $\theta^i$.
 - Over time, the hypernetwork learns a mapping:
 
-$$
-z^i \rightarrow \theta^i
-$$
+  $$
+  z^i \rightarrow \theta^i
+  $$
 
 This is fundamentally different from FedAvg, which tries to collapse all client knowledge into one average model.
 
@@ -98,14 +104,14 @@ This is fundamentally different from FedAvg, which tries to collapse all client 
 
 ## 6. Mathematical Formulation
 
-Let client \( i \) have:
+Let client $i$ have:
 
-- Data distribution \( P_i \) and \( m_i \) local data points
+- Data distribution $P_i$ and $m_i$ local data points
 - Empirical loss:
 
-$$
-\mathcal{L}_i(\theta_i) = \frac{1}{m_i} \sum_{j=1}^{m_i} \ell_i(x_j, y_j; \theta_i)
-$$
+  $$
+  \mathcal{L}_i(\theta_i) = \frac{1}{m_i} \sum_{j=1}^{m_i} \ell_i(x_j, y_j; \theta_i)
+  $$
 
 ### 6.1 Objective in Standard PFL:
 
@@ -113,7 +119,7 @@ $$
 \min_{\Theta} \frac{1}{n} \sum_{i=1}^n \mathcal{L}_i(\theta_i)
 $$
 
-where \( \Theta = \{ \theta_1, ..., \theta_n \} \)
+where $\Theta = \{ \theta_1, ..., \theta_n \}$
 
 ### 6.2 Reformulated for pFedHN:
 
@@ -152,8 +158,8 @@ For r = 1 to R:
 
 In scenarios where clients perform different tasks (e.g., different label spaces), it's helpful to split the model into:
 
-- A **shared feature extractor** generated by the hypernetwork \( h(\cdot) \)
-- A **client-specific classifier head** \( \omega_i \), trained locally
+- **A shared feature extractor** generated by the hypernetwork \( h(\cdot) \)
+- **A client-specific classifier head** \( \omega_i \), trained locally
 
 This decoupling helps adapt to label heterogeneity while maintaining parameter sharing.
 
@@ -164,10 +170,6 @@ $$
 \frac{1}{n} \sum_{i=1}^n \mathcal{L}_i(\omega_i, h(v_i; \phi))
 $$
 
-Here:
-- \( h(\cdot; \phi) \): generates the feature extractor
-- \( \omega_i \): client-specific head
-
 ---
 
 ## 9. Meta-Learning View
@@ -175,10 +177,10 @@ Here:
 pFedHN can be viewed as a **model-based meta-learning method**:
 
 - Rather than learning a fixed initialization (like in MAML), pFedHN learns a **model generator**:
-  
-  $$
-  z^i \mapsto \theta^i = H_\phi(z^i)
-  $$
+
+$$
+z^i \mapsto \theta^i = H_\phi(z^i)
+$$
 
 - This enables generalization to **unseen clients**, provided a descriptor \( z^i \) can be inferred or learned.
 
@@ -227,18 +229,22 @@ pFedHN proposes a scalable, personalized federated learning framework using hype
 ### Key Points:
 
 - Personalized models:
-  $$
-  \theta^i = H_\phi(z^i)
-  $$
+
+$$
+\theta^i = H_\phi(z^i)
+$$
 
 - Optimization objective:
-  $$
-  \min_{\phi, v_1, ..., v_n} \frac{1}{n} \sum_{i=1}^n \mathcal{L}_i(h(v_i; \phi))
-  $$
+
+$$
+\min_{\phi, v_1, ..., v_n} \frac{1}{n} \sum_{i=1}^n \mathcal{L}_i(h(v_i; \phi))
+$$
 
 - With optional local heads:
-  $$
-  \min_{\phi, v_1, ..., v_n, \omega_1, ..., \omega_n} \frac{1}{n} \sum_{i=1}^n \mathcal{L}_i(\omega_i, h(v_i; \phi))
-  $$
+
+$$
+\min_{\phi, v_1, ..., v_n, \omega_1, ..., \omega_n}
+\frac{1}{n} \sum_{i=1}^n \mathcal{L}_i(\omega_i, h(v_i; \phi))
+$$
 
 pFedHN effectively bridges **federated learning and meta-learning**, and presents a strong, extensible framework for future research in real-world personalized edge AI systems.
