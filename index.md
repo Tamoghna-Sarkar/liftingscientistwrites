@@ -30,4 +30,4 @@
 
 
 ### ASL
-- [Networking Papers](./ASL.md)
+- [ASL Papers](./ASL.md)
